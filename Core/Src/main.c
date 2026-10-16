@@ -21,11 +21,11 @@
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
-#include "led.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "led.h"
+#include "timebase.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -92,7 +92,7 @@ int main(void)
   MX_TIM2_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  HAL_TIM_Base_Start_IT(&htim2);
+  Timebase_Start();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -102,6 +102,10 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+    if (Timebase_HasTicked())
+    {
+      led();
+    }
   }
   /* USER CODE END 3 */
 }
@@ -148,12 +152,7 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-{
-  if(htim -> Instance == &htim2) {
-  led();
-  }
-}
+/* The TIM2 callback now lives in timebase.c */
 /* USER CODE END 4 */
 
 /**
