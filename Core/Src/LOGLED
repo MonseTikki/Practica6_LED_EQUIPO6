@@ -1,0 +1,24 @@
+#include "main.h"
+#include "led.h"
+
+static void LED_Set(GPIO_PinState state)
+{
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, state);
+}
+
+int main(void)
+{
+	HAL_Init();
+	SystemClock_Config();
+	MX_GPIO_Init();
+
+	LED_Set(GPIO_PIN_RESET);
+
+	while (1)
+	{
+		LED_Set(GPIO_PIN_SET);
+		HAL_Delay(500U);
+		LED_Set(GPIO_PIN_RESET);
+		HAL_Delay(500U);
+	}
+}
